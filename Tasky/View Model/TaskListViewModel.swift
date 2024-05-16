@@ -14,6 +14,14 @@ class TaskListViewModel: ObservableObject {
         tasks = Self.dummyTasks()
     }
     
+    func changeTaskStatus(_ task: Tasky.Task) {
+        guard let taskIndex = tasks.firstIndex(where: { $0.id == task.id }) else {
+            return
+        }
+        
+        tasks[taskIndex].isComplete.toggle()
+    }
+    
     private static func dummyTasks() -> [Tasky.Task] {
         [
             Task(title: "Complete \"Strings and Characters\" chapter from Swift book"),
