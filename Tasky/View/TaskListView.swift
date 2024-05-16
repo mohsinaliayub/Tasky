@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  TaskListView.swift
 //  Tasky
 //
 //  Created by Mohsin Ali Ayub on 12.05.24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct TaskListView: View {
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -20,5 +20,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    TaskListView()
 }
