@@ -11,17 +11,22 @@ struct TaskListView: View {
     @ObservedObject var taskManager: TaskListViewModel
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+        List {
+            Section("ONGOING (\(taskManager.ongoingTasks.count))") {
                 ForEach(taskManager.ongoingTasks) { task in
                     TaskInfoView(task: task, manager: taskManager)
                 }
-                
+            }
+            .listRowSeparator(.hidden)
+            
+            Section("COMPLETED (\(taskManager.completedTasks.count))") {
                 ForEach(taskManager.completedTasks) { task in
                     TaskInfoView(task: task, manager: taskManager)
                 }
             }
+            .listRowSeparator(.hidden)
         }
+        .listStyle(.plain)
     }
 }
 
