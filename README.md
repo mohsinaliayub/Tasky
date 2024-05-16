@@ -12,8 +12,11 @@ The app is developed using SwiftUI framework.
 
 ## Progress
 The app is in its early phases of development. But you can catch-up on the progress here:
-- [ ] Develop the basic UI.
-- [ ] Create an MVP.
+- [x] Create models for Task.
+- [x] Show Tasks in **Ongoing** and **Completed** sections.
+- [ ] Create new tasks.
+- [ ] Persist the tasks with **SwiftData**.
+- [ ] Finish the MVP.
 - [ ] Add a bit of flair to UI with animations and colors.
 - [ ] Sync data across multiple iOS devices.
 
