@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TaskListView: View {
+    @ObservedObject var taskManager: TaskListViewModel
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -20,5 +22,5 @@ struct TaskListView: View {
 }
 
 #Preview {
-    TaskListView()
+    TaskListView(taskManager: TaskListViewModel())
 }

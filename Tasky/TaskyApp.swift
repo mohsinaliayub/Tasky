@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct TaskyApp: App {
+    let taskManager = TaskListViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            TaskListView()
+            TaskListView(taskManager: TaskListViewModel())
         }
     }
 }
