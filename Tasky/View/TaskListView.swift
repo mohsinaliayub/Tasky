@@ -11,13 +11,23 @@ struct TaskListView: View {
     @ObservedObject var taskManager: TaskListViewModel
     
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                ForEach(taskManager.tasks) { task in
+                    TaskInfoView(task: task)
+                }
+            }
         }
-        .padding()
+    }
+}
+
+struct TaskInfoView: View {
+    let task: Tasky.Task
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(task.title).padding(.horizontal)
+        }
     }
 }
 
