@@ -13,17 +13,20 @@ struct TaskListView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                ForEach(taskManager.tasks) { task in
+                ForEach(taskManager.ongoingTasks) { task in
                     TaskInfoView(task: task, manager: taskManager)
                 }
-                .padding(.horizontal)
+                
+                ForEach(taskManager.completedTasks) { task in
+                    TaskInfoView(task: task, manager: taskManager)
+                }
             }
         }
-        .background(Color.black)
     }
 }
 
 
 #Preview {
     TaskListView(taskManager: TaskListViewModel())
+        .preferredColorScheme(.dark)
 }

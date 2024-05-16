@@ -10,6 +10,14 @@ import Foundation
 class TaskListViewModel: ObservableObject {
     @Published var tasks: [Tasky.Task]
     
+    var ongoingTasks: [Tasky.Task] {
+        tasks.filter { !$0.isComplete }
+    }
+    
+    var completedTasks: [Tasky.Task] {
+        tasks.filter { $0.isComplete }
+    }
+    
     init() {
         tasks = Self.dummyTasks()
     }
