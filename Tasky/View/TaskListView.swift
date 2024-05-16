@@ -22,6 +22,8 @@ struct TaskListView: View {
         .background(Color.black)
     }
 }
+// checkmark.circle.fill
+// circle
 
 struct TaskInfoView: View {
     let task: Tasky.Task
@@ -29,14 +31,13 @@ struct TaskInfoView: View {
     
     var body: some View {
         HStack {
-            Circle()
-                .strokeBorder(lineWidth: 2)
+           Image(systemName: imageName())
+                .font(.title2)
+                .imageScale(.large)
                 .foregroundStyle(task.isComplete ? .gray : .purple)
-                .frame(width: 20, height: 20)
                 .onTapGesture {
                     manager.changeTaskStatus(task)
                 }
-            
             VStack(alignment: .leading) {
                 Text(task.title)
                     .lineLimit(1)
@@ -51,6 +52,10 @@ struct TaskInfoView: View {
                 // TODO: Add Due date here...
             }
         }
+    }
+    
+    private func imageName() -> String {
+        task.isComplete ? "checkmark.circle" : "circle"
     }
 }
 
