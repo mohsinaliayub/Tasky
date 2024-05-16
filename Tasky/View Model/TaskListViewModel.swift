@@ -10,8 +10,24 @@ import Foundation
 class TaskListViewModel: ObservableObject {
     @Published var tasks: [Tasky.Task]
     
+    var ongoingTasks: [Tasky.Task] {
+        tasks.filter { !$0.isComplete }
+    }
+    
+    var completedTasks: [Tasky.Task] {
+        tasks.filter { $0.isComplete }
+    }
+    
     init() {
         tasks = Self.dummyTasks()
+    }
+    
+    func changeTaskStatus(_ task: Tasky.Task) {
+        guard let taskIndex = tasks.firstIndex(where: { $0.id == task.id }) else {
+            return
+        }
+        
+        tasks[taskIndex].isComplete.toggle()
     }
     
     private static func dummyTasks() -> [Tasky.Task] {
