@@ -87,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				6804F4D42BF0BB230043C621 /* TaskListView.swift */,
+				684D12CF2BF6B22200AFB8D3 /* TaskInfoView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -95,7 +96,6 @@
 			isa = PBXGroup;
 			children = (
 				684D12CD2BF6A72600AFB8D3 /* TaskListViewModel.swift */,
-				684D12CF2BF6B22200AFB8D3 /* TaskInfoView.swift */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
