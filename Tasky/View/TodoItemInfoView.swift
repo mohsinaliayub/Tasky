@@ -21,7 +21,7 @@ struct TodoItemInfoView: View {
                 Text(task.title)
                     .lineLimit(1)
                     .font(.subheadline)
-                    .foregroundStyle(task.isComplete ? .gray : .white)
+                    .foregroundStyle(task.isComplete ? .gray : .primary)
                     .overlay {
                         if task.isComplete {
                             Rectangle().frame(height: 1)
