@@ -7,12 +7,16 @@
 
 import Foundation
 
-struct Task: Identifiable {
+struct Task: Identifiable, CustomStringConvertible {
     var title: String
     var isComplete = false
-    var description: String?
+    var taskDescription: String?
     var dueDate: Date?
     var priority: Priority?
+    
+    var description: String {
+        "{\(title), isComplete: \(isComplete)}"
+    }
     
     var id = UUID()
     

@@ -8,48 +8,16 @@
 import SwiftUI
 
 struct TaskDetailsView: View {
-    @State private var title: String = ""
+    @Binding var task: Tasky.Task
     
     var body: some View {
         VStack(alignment: .leading, spacing: 32) {
             VStack {
-                TextField("Enter task", text: $title)
-                    .font(.title2)
+                TextField("Enter task", text: $task.title)
+                    .font(.headline)
                     .padding(.bottom, 8)
                 Divider()
             }
-            
-            LabelAndContentView(systemName: "calendar") {
-                HStack {
-                    Text("Today")
-                        .padding(8)
-                        .background {
-                            RoundedRectangle(cornerRadius: 25)
-                                .strokeBorder(style: .init(lineWidth: 1, dash: [3]))
-                        }
-                    Text("Tomorrow")
-                        .padding(8)
-                        .background {
-                            RoundedRectangle(cornerRadius: 25)
-                                .strokeBorder(style: .init(lineWidth: 1, dash: [3]))
-                        }
-                    Text("Custom")
-                        .padding(8)
-                        .background {
-                            RoundedRectangle(cornerRadius: 25)
-                                .strokeBorder(style: .init(lineWidth: 1, dash: [3]))
-                        }
-                }
-            }
-            
-            LabelAndContentView(systemName: "bell") {
-                
-            }
-            
-            LabelAndContentView(systemName: "exclamationmark.triangle") {
-                
-            }
-            
             Spacer()
             
         }
@@ -72,5 +40,5 @@ struct LabelAndContentView<Content: View>: View {
 }
 
 #Preview {
-    TaskDetailsView()
+    TaskDetailsView(task: .constant(Tasky.Task(title: "Buy apples")))
 }
