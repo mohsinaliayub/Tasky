@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TodoItemDetailView: View {
     @Binding var todo: TodoItem
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack(alignment: .leading, spacing: 32) {
@@ -22,6 +23,23 @@ struct TodoItemDetailView: View {
             
         }
         .padding()
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Cancel") {
+                    dismiss()
+                }
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Text("Done").bold()
+                }
+            }
+        }
     }
 }
 
@@ -40,5 +58,7 @@ struct LabelAndContentView<Content: View>: View {
 }
 
 #Preview {
-    TodoItemDetailView(todo: .constant(TodoItem(title: "Buy apples")))
+    NavigationStack {
+        TodoItemDetailView(todo: .constant(TodoItem(title: "Buy apples")))
+    }
 }
