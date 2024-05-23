@@ -1,5 +1,5 @@
 //
-//  Task.swift
+//  TodoItem.swift
 //  Tasky
 //
 //  Created by Mohsin Ali Ayub on 16.05.24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Task: Identifiable, CustomStringConvertible {
+struct TodoItem: Identifiable, CustomStringConvertible {
     var title: String
     var isComplete = false
     var taskDescription: String?

@@ -1,5 +1,5 @@
 //
-//  TaskInfoView.swift
+//  TodoItemInfoView.swift
 //  Tasky
 //
 //  Created by Mohsin Ali Ayub on 16.05.24.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct TaskInfoView: View {
-    let task: Tasky.Task
-    let manager: TaskListViewModel
+struct TodoItemInfoView: View {
+    let task: Tasky.TodoItem
+    let manager: TodoListViewModel
     
     var body: some View {
         HStack {
             TaskCircleView(isComplete: task.isComplete)
                 .onTapGesture {
-                    manager.changeTaskStatus(task)
+                    manager.changeTodoStatus(task)
                 }
             VStack(alignment: .leading) {
                 Text(task.title)
@@ -39,5 +39,5 @@ struct TaskInfoView: View {
 }
 
 #Preview {
-    TaskListView(taskManager: TaskListViewModel())
+    TodoListView(todoManager: TodoListViewModel())
 }

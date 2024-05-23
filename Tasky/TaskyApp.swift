@@ -9,11 +9,11 @@ import SwiftUI
 
 @main
 struct TaskyApp: App {
-    let taskManager = TaskListViewModel()
+    let taskManager = TodoListViewModel()
     
     var body: some Scene {
         WindowGroup {
-            TaskListView(taskManager: TaskListViewModel())
+            TodoListView(todoManager: TodoListViewModel())
         }
     }
 }
