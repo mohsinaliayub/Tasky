@@ -13,19 +13,18 @@ struct TodoListView: View {
     @State private var selectedTodoIndex = 0
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 8) {
-                ForEach(0..<todoManager.todos.count, id: \.self) { todoIndex in
-                    TodoItemInfoView(task: todoManager.todos[todoIndex], manager: todoManager)
-                        .onTapGesture {
-                            selectedTodoIndex = todoIndex
-                            displayTodoDetails = true
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(0..<todoManager.todos.count, id: \.self) { todoIndex in
+                        NavigationLink(destination: TodoItemDetailView(todo: $todoManager.todos[todoIndex])) {
+                            TodoItemInfoView(task: todoManager.todos[todoIndex], manager: todoManager)
                         }
+                    }
                 }
             }
-        }
-        .sheet(isPresented: $displayTodoDetails) {
-            TodoItemDetailView(todo: $todoManager.todos[selectedTodoIndex])
+            .navigationTitle("Tasky")
+            .padding([.horizontal, .top])
         }
     }
 }
