@@ -13,10 +13,7 @@ struct TaskInfoView: View {
     
     var body: some View {
         HStack {
-           Image(systemName: imageName())
-                .font(.title2)
-                .imageScale(.large)
-                .foregroundStyle(task.isComplete ? .gray : .purple)
+            TaskCircleView(isComplete: task.isComplete)
                 .onTapGesture {
                     manager.changeTaskStatus(task)
                 }

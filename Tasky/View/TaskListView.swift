@@ -9,24 +9,24 @@ import SwiftUI
 
 struct TaskListView: View {
     @ObservedObject var taskManager: TaskListViewModel
+    @State private var displayTaskDetails = false
+    @State private var selectedTaskIndex = 0
     
     var body: some View {
-        List {
-            Section("ONGOING (\(taskManager.ongoingTasks.count))") {
-                ForEach(taskManager.ongoingTasks) { task in
-                    TaskInfoView(task: task, manager: taskManager)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(0..<taskManager.tasks.count, id: \.self) { taskIndex in
+                    TaskInfoView(task: taskManager.tasks[taskIndex], manager: taskManager)
+                        .onTapGesture {
+                            selectedTaskIndex = taskIndex
+                            displayTaskDetails = true
+                        }
                 }
             }
-            .listRowSeparator(.hidden)
-            
-            Section("COMPLETED (\(taskManager.completedTasks.count))") {
-                ForEach(taskManager.completedTasks) { task in
-                    TaskInfoView(task: task, manager: taskManager)
-                }
-            }
-            .listRowSeparator(.hidden)
         }
-        .listStyle(.plain)
+        .sheet(isPresented: $displayTaskDetails) {
+            TaskDetailsView(task: $taskManager.tasks[selectedTaskIndex])
+        }
     }
 }
 
