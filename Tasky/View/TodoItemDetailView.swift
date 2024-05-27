@@ -14,8 +14,9 @@ struct TodoItemDetailView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 32) {
             VStack {
-                TextField("Enter task", text: $todo.title)
+                TextField("Enter task", text: $todo.title, axis: .vertical)
                     .font(.headline)
+                    .lineLimit(5)
                     .padding(.bottom, 8)
                 Divider()
             }
@@ -59,6 +60,6 @@ struct LabelAndContentView<Content: View>: View {
 
 #Preview {
     NavigationStack {
-        TodoItemDetailView(todo: .constant(TodoItem(title: "Buy apples")))
+        TodoItemDetailView(todo: .constant(TodoItem(title: "Finish the Chapter 6: Enumerations of The Swift Programming Language (Swift 5.7) book")))
     }
 }
