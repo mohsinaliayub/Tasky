@@ -9,25 +9,42 @@ import SwiftUI
 
 struct DateTimePickerView: View {
     @State private var date: Date = Date()
+    @State private var showDatePicker = true
 
     var body: some View {
         VStack {
-            DatePicker("", selection: $date, in: Date()..., displayedComponents: .date)
-                .datePickerStyle(.graphical)
-                .labelsHidden()
-            DatePicker("", selection: $date, in: Date()..., displayedComponents: .hourAndMinute)
-                .datePickerStyle(.wheel)
+            HStack {
+                Image(systemName: "calendar")
+                Text("Select a date")
+                    .font(.caption)
+                Spacer()
+            }
+            .padding(12)
+            .background {
+                RoundedRectangle(cornerRadius: 5)
+                    .foregroundStyle(.gray.opacity(0.3))
+            }
+            .onTapGesture {
+                withAnimation(.linear) {
+                    showDatePicker.toggle()
+                }
+            }
+            if showDatePicker {
+                DatePicker("", selection: $date, in: Date()..., displayedComponents: .date)
+                    .datePickerStyle(.graphical)
+                    .opacity(showDatePicker ? 1 : 0)
+                    .transition(.scale)
+            }
+                
+            RoundedRectangle(cornerRadius: 5)
+                .foregroundStyle(.gray.opacity(0.3))
+                .frame(height: 100)
         }
-    }
-    
-    private func printDateAndTime() {
-        let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: date)
-        let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: date)
-        
-        print("Task deadline: \(dateComponents.day!).\(dateComponents.month!).\(dateComponents.year!) at \(timeComponents.hour!):\(timeComponents.minute!)")
+        .padding()
     }
 }
 
 #Preview {
     DateTimePickerView()
+        .preferredColorScheme(.dark)
 }
