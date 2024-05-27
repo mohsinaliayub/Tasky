@@ -17,7 +17,7 @@ struct DateTimePickerView: View {
                 DatePicker("", selection: $date, in: Date()..., displayedComponents: [.date])
                     .datePickerStyle(.graphical)
             }
-            SectionWithContentView(systemIconName: "clock", title: "Add a time") {
+            SectionWithContentView(systemIconName: "clock", title: "Add time") {
                 DatePicker("", selection: $date, in: Date()..., displayedComponents: [.hourAndMinute])
                     .datePickerStyle(.wheel)
             }
@@ -32,6 +32,7 @@ struct SectionWithContentView<Content>: View where Content: View {
     var content: () -> Content
     
     @State private var displayingContent = true
+    private let drawingConstants = DrawingConstants()
     
     var body: some View {
         VStack {
@@ -47,19 +48,27 @@ struct SectionWithContentView<Content>: View where Content: View {
     private func section(with systemName: String, and title: String) -> some View {
         HStack {
             Image(systemName: systemName)
-            Text(title).font(.caption)
+            Text(title).font(.caption.bold())
             Spacer()
         }
-        .padding(12)
-        .background {
-            RoundedRectangle(cornerRadius: 5)
-                .foregroundStyle(.gray.opacity(0.3))
-        }
+        .padding(drawingConstants.sectionPadding)
+        .background(sectionBackground)
         .onTapGesture {
             withAnimation(.linear) {
                 displayingContent.toggle()
             }
         }
+    }
+    
+    var sectionBackground: some View {
+        RoundedRectangle(cornerRadius: drawingConstants.sectionBackgroundCornerRadius)
+            .foregroundStyle(drawingConstants.sectionBackgroundColor)
+    }
+    
+    private struct DrawingConstants {
+        let sectionPadding: CGFloat = 12
+        let sectionBackgroundCornerRadius: CGFloat = 5
+        let sectionBackgroundColor = Color.gray.opacity(0.3)
     }
 }
 
