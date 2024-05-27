@@ -13,34 +13,53 @@ struct DateTimePickerView: View {
 
     var body: some View {
         VStack {
-            HStack {
-                Image(systemName: "calendar")
-                Text("Select a date")
-                    .font(.caption)
-                Spacer()
-            }
-            .padding(12)
-            .background {
-                RoundedRectangle(cornerRadius: 5)
-                    .foregroundStyle(.gray.opacity(0.3))
-            }
-            .onTapGesture {
-                withAnimation(.linear) {
-                    showDatePicker.toggle()
-                }
-            }
-            if showDatePicker {
-                DatePicker("", selection: $date, in: Date()..., displayedComponents: .date)
+            SectionWithContentView(systemIconName: "calendar", title: "Pick a date") {
+                DatePicker("", selection: $date, in: Date()..., displayedComponents: [.date])
                     .datePickerStyle(.graphical)
-                    .opacity(showDatePicker ? 1 : 0)
-                    .transition(.scale)
             }
-                
-            RoundedRectangle(cornerRadius: 5)
-                .foregroundStyle(.gray.opacity(0.3))
-                .frame(height: 100)
+            SectionWithContentView(systemIconName: "clock", title: "Add a time") {
+                DatePicker("", selection: $date, in: Date()..., displayedComponents: [.hourAndMinute])
+                    .datePickerStyle(.wheel)
+            }
         }
         .padding()
+    }
+}
+
+struct SectionWithContentView<Content>: View where Content: View {
+    let systemIconName: String
+    let title: String
+    var content: () -> Content
+    
+    @State private var displayingContent = true
+    
+    var body: some View {
+        VStack {
+            section(with: systemIconName, and: title)
+            if displayingContent {
+                content()
+                    .transition(.scale) // FIXME: Fix this transition to scale from top-leading
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func section(with systemName: String, and title: String) -> some View {
+        HStack {
+            Image(systemName: systemName)
+            Text(title).font(.caption)
+            Spacer()
+        }
+        .padding(12)
+        .background {
+            RoundedRectangle(cornerRadius: 5)
+                .foregroundStyle(.gray.opacity(0.3))
+        }
+        .onTapGesture {
+            withAnimation(.linear) {
+                displayingContent.toggle()
+            }
+        }
     }
 }
 
