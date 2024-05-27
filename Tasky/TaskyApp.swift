@@ -13,7 +13,8 @@ struct TaskyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            TodoListView(todoManager: TodoListViewModel())
+//            TodoListView(todoManager: TodoListViewModel())
+            DateTimePickerView()
         }
     }
 }
