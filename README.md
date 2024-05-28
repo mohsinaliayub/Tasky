@@ -12,9 +12,12 @@ The app is developed using SwiftUI framework.
 
 ## Progress
 The app is in its early phases of development. But you can catch-up on the progress here:
-- [x] Create models for Task.
-- [x] Show Tasks in **Ongoing** and **Completed** sections.
-- [ ] Create new tasks.
+- [x] Create models for Todo items.
+- [x] Create a view to pick **Due date** and **Reminder time** for a todo item.
+- [x] Create reusable component for **CollapsableContainer**.
+- [ ] Modify the todo item.
+- [ ] Create new todo item.
+- [ ] Show Tasks in **Ongoing** and **Completed** sections.
 - [ ] Persist the tasks with **SwiftData**.
 - [ ] Finish the MVP.
 - [ ] Add a bit of flair to UI with animations and colors.
