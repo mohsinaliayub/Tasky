@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TodoItemDetailView: View {
-    @EnvironmentObject var model: TodoDetailViewModel
+    @ObservedObject var model: TodoDetailViewModel
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -29,7 +29,6 @@ struct TodoItemDetailView: View {
                 }
             }
             Spacer()
-            
         }
         .padding()
         .navigationBarTitleDisplayMode(.inline)
@@ -69,8 +68,7 @@ struct LabelAndContentView<Content: View>: View {
 
 #Preview {
     NavigationStack {
-        TodoItemDetailView()
-            .environmentObject(TodoDetailViewModel(manager: TodoManager(), todo: TodoItem(title: "Finish the Chapter 6: Enumerations of The Swift Programming Language (Swift 5.7) book")))
+        TodoItemDetailView(model: TodoDetailViewModel(manager: TodoManager(), todo: TodoItem(title: "Finish the Chapter 6: Enumerations of The Swift Programming Language (Swift 5.7) book")))
             .preferredColorScheme(.dark)
     }
 }
