@@ -68,13 +68,14 @@ struct SectionWithContentView<Content>: View where Content: View {
     let title: String
     var content: () -> Content
     
-    @State private var displayingContent = true
+    /// Keeps tracks of content's state: expanded or collapsed. Hides the content when it's set to .collapsed.
+    @State private var contentState: ContentState = .collapsed
     private let drawingConstants = DrawingConstants()
     
     var body: some View {
         VStack {
             section(with: systemIconName, and: title)
-            if displayingContent {
+            if contentState == .expanded {
                 content()
                     .transition(.scale) // FIXME: Fix this transition to scale from top-leading
             }
@@ -91,8 +92,9 @@ struct SectionWithContentView<Content>: View where Content: View {
         .padding(drawingConstants.sectionPadding)
         .background(sectionBackground)
         .onTapGesture {
+            // change the content state: expanded -> collapsed, and vice versa
             withAnimation(.linear) {
-                displayingContent.toggle()
+                contentState = (contentState == .expanded) ? .collapsed : .expanded
             }
         }
     }
@@ -100,6 +102,11 @@ struct SectionWithContentView<Content>: View where Content: View {
     var sectionBackground: some View {
         RoundedRectangle(cornerRadius: drawingConstants.sectionBackgroundCornerRadius)
             .foregroundStyle(drawingConstants.sectionBackgroundColor)
+    }
+    
+    enum ContentState {
+        case collapsed
+        case expanded
     }
     
     private struct DrawingConstants {
