@@ -50,7 +50,7 @@ struct CollapsibleContent<Section, Content>: View where Section: View, Content: 
     }
     
     private struct DrawingConstants {
-        let sectionPadding: CGFloat = 16
+        let sectionPadding: CGFloat = 12
         let sectionBackgroundCornerRadius: CGFloat = 5
         let sectionBackgroundColor = Color.gray.opacity(0.3)
     }
