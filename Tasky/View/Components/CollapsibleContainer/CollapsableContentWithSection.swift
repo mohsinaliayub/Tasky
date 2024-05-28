@@ -1,5 +1,5 @@
 //
-//  CollapsibleContent.swift
+//  CollapsableContentWithSection.swift
 //  Tasky
 //
 //  Created by Mohsin Ali Ayub on 28.05.24.
@@ -62,7 +62,7 @@ struct CollapsableContent<Section, Content>: CollapsableContentWithSection where
     var content: () -> Content
 }
 
-struct CollapsibleContentPreview: View {
+struct CollapsableContentWithSectionPreview: View {
     @State var contentState = ContentState.expanded
     @State var date = Date()
     
@@ -81,6 +81,6 @@ struct CollapsibleContentPreview: View {
 }
 
 #Preview {
-    CollapsibleContentPreview()
+    CollapsableContentWithSectionPreview()
         .preferredColorScheme(.dark)
 }
