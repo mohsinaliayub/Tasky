@@ -15,12 +15,23 @@ class TodoManager: ObservableObject {
     }
     
     func changeStatus(for todoItem: TodoItem) {
-        guard let todoIndex = todos.firstIndex(where: { $0.id == todoItem.id }) else {
+        guard let todoIndex = index(for: todoItem) else {
             return
         }
-        print(todos[todoIndex])
         todos[todoIndex].isComplete.toggle()
-        print(todos[todoIndex])
+    }
+    
+    func save(_ todoItem: TodoItem) {
+        guard let index = index(for: todoItem) else { return }
+        objectWillChange.send()
+        print(todos[index])
+        todos[index].title = todoItem.title
+        todos[index].isComplete = todoItem.isComplete
+        print(todos[index])
+    }
+    
+    private func index(for todoItem: TodoItem) -> Int? {
+        todos.firstIndex(where: { $0.id == todoItem.id })
     }
     
     private static func dummyTasks() -> [TodoItem] {

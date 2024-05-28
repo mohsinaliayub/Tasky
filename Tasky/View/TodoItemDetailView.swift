@@ -8,23 +8,25 @@
 import SwiftUI
 
 struct TodoItemDetailView: View {
-    var todo: TodoItem
-    @State private var title = ""
+    @ObservedObject var model: TodoDetailViewModel
     @Environment(\.dismiss) private var dismiss
-    
-    init(todo: TodoItem) {
-        self.todo = todo
-        _title = State<String>(initialValue: todo.title)
-    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 32) {
             VStack {
-                TextField("Enter task", text: $title, axis: .vertical)
-                    .font(.headline)
-                    .lineLimit(5)
-                    .padding(.bottom, 8)
-                Divider()
+                HStack(alignment: .top) {
+                    TaskCircleView(isComplete: model.isComplete)
+                        .onTapGesture {
+                            model.changeStatus()
+                        }
+                    VStack {
+                        TextField("Enter task", text: $model.todoTitle, axis: .vertical)
+                            .font(.headline)
+                            .lineLimit(5)
+                            .padding(.bottom, 8)
+                        Divider()
+                    }
+                }
             }
             Spacer()
             
@@ -41,9 +43,10 @@ struct TodoItemDetailView: View {
             
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
+                    model.save()
                     dismiss()
                 }) {
-                    Text("Done").bold()
+                    Text("Done").font(.headline)
                 }
             }
         }
@@ -66,6 +69,7 @@ struct LabelAndContentView<Content: View>: View {
 
 #Preview {
     NavigationStack {
-        TodoItemDetailView(todo: TodoItem(title: "Finish the Chapter 6: Enumerations of The Swift Programming Language (Swift 5.7) book"))
+        TodoItemDetailView(model: TodoDetailViewModel(manager: TodoManager(), todo: TodoItem(title: "Finish the Chapter 6: Enumerations of The Swift Programming Language (Swift 5.7) book")))
+            .preferredColorScheme(.dark)
     }
 }

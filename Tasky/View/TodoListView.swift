@@ -17,7 +17,7 @@ struct TodoListView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     ForEach(0..<model.todos.count, id: \.self) { todoIndex in
-                        NavigationLink(destination: TodoItemDetailView(todo: model.todos[todoIndex])) {
+                        NavigationLink(destination: TodoItemDetailView(model: TodoDetailViewModel(manager: model.manager, todo: model.todos[todoIndex]))) {
                             TodoItemInfoView(task: model.todos[todoIndex], manager: model)
                         }
                     }
