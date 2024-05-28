@@ -24,8 +24,42 @@ struct DateTimePickerView: View {
                 DatePicker("", selection: $date, in: Date()..., displayedComponents: [.hourAndMinute])
                     .datePickerStyle(.wheel)
             }
+            buttonsStack
         }
         .padding()
+    }
+    
+    func button(_ title: LocalizedStringKey, action: @escaping () -> Void) -> some View {
+        Button(title, action: action)
+            .frame(maxWidth: .infinity, minHeight: DrawingConstants.buttonHeight)
+    }
+    
+    var dividerRectangle: some View {
+        Rectangle().foregroundStyle(.gray.opacity(0.8))
+    }
+    var horizontalDivider: some View {
+        dividerRectangle.frame(height: 0.4)
+    }
+    var verticalDivider: some View {
+        dividerRectangle.frame(width: 0.4, height: DrawingConstants.buttonHeight)
+    }
+    
+    var buttonsStack: some View {
+        VStack(spacing: 0) {
+            horizontalDivider
+            HStack(spacing: 0) {
+                button("Cancel") { }
+                    .foregroundStyle(.gray)
+                verticalDivider
+                button("Done") { }
+                    .bold()
+            }
+            horizontalDivider
+        }
+    }
+    
+    private enum DrawingConstants {
+        static let buttonHeight: CGFloat = 80
     }
 }
 
