@@ -50,7 +50,10 @@ extension CollapsableContentWithSection {
             }
             .onTapGesture {
                 withAnimation {
-                    contentState.wrappedValue = (contentState.wrappedValue == .expanded) ? .collapsed : .expanded
+//                    contentState.wrappedValue = (contentState.wrappedValue == .expanded) ? .collapsed : .expanded
+                    // Only expand the content, collapsing of the content is managed by CollapsableContainer
+                    // FIXME: Fix the logic so it can be used as a separate component
+                    contentState.wrappedValue = .expanded
                 }
             }
     }

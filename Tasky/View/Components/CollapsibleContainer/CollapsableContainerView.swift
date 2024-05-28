@@ -31,13 +31,23 @@ struct CollapsableContainerView<Section, Content>: View where Section: View, Con
                 } content: {
                     contentProvider(index)
                 }
+                .onChange(of: contentStates[index]) {
+                    if contentStates[index] == .expanded {
+                        contentStates.indices.filter({ $0 != index }).forEach { contentStates[$0] = .collapsed }
+                    }
+                }
             }
         }
+        .onAppear {
+            contentStates[0] = .expanded
+        }
+        .padding()
     }
 }
 
 struct CollapsableContainerPreview: View {
     @State private var date = Date()
+    @State private var time = Date()
     
     var body: some View {
         VStack {
@@ -61,8 +71,21 @@ struct CollapsableContainerPreview: View {
     
     @ViewBuilder
     func content(for index: Int) -> some View {
-        DatePicker("", selection: $date, in: Date()..., displayedComponents: [.date])
+        if index == 0 {
+            dueDatePicker
+        } else {
+            reminderTimePicker
+        }
+    }
+    
+    var dueDatePicker: some View {
+        DatePicker("", selection: $date, in: Date()..., displayedComponents: .date)
             .datePickerStyle(.graphical)
+    }
+    
+    var reminderTimePicker: some View {
+        DatePicker("", selection: $date, in: Date()..., displayedComponents: .hourAndMinute)
+            .datePickerStyle(.wheel)
     }
 }
 
