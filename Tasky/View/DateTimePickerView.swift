@@ -14,8 +14,6 @@ enum ContentState {
 
 struct DateTimePickerView: View {
     @State private var date: Date = Date()
-    @State private var time = Date()
-    @State private var showDatePicker = true
     @State private var statesOfSections: [ContentState] = [.expanded, .collapsed]
     @State private var titleForSection: [String?] = [nil, nil]
 
