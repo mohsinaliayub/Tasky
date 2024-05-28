@@ -10,8 +10,6 @@ import SwiftUI
 class TodoListViewModel: ObservableObject {
     @Published var manager: TodoManager
     
-    private(set) lazy var todoInfoModel = TodoItemInfoViewModel(manager: manager)
-    
     var todos: [TodoItem] { manager.todos }
     
     init(manager: TodoManager) {

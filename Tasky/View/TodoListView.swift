@@ -9,8 +9,6 @@ import SwiftUI
 
 struct TodoListView: View {
     @ObservedObject var model: TodoListViewModel
-    @State private var displayTodoDetails = false
-    @State private var selectedTodoIndex = 0
     
     var body: some View {
         NavigationStack {
