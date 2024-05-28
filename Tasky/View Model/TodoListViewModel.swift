@@ -8,7 +8,7 @@
 import SwiftUI
 
 class TodoListViewModel: ObservableObject {
-    var manager: TodoManager
+    @Published var manager: TodoManager
     
     private(set) lazy var todoInfoModel = TodoItemInfoViewModel(manager: manager)
     
@@ -19,7 +19,6 @@ class TodoListViewModel: ObservableObject {
     }
     
     func changeTodoStatus(for todoItem: TodoItem) {
-        objectWillChange.send()
         manager.changeStatus(for: todoItem)
     }
     

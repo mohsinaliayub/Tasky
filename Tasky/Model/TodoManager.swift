@@ -7,27 +7,24 @@
 
 import Foundation
 
-class TodoManager: ObservableObject {
-    @Published var todos: [TodoItem]
+struct TodoManager {
+    var todos: [TodoItem]
     
     init() {
         todos = Self.dummyTasks()
     }
     
-    func changeStatus(for todoItem: TodoItem) {
-        guard let todoIndex = index(for: todoItem) else {
-            return
-        }
+    mutating func changeStatus(for todoItem: TodoItem) {
+        guard let todoIndex = index(for: todoItem) else { return }
+        
         todos[todoIndex].isComplete.toggle()
     }
     
-    func save(_ todoItem: TodoItem) {
+    mutating func save(_ todoItem: TodoItem) {
         guard let index = index(for: todoItem) else { return }
-        objectWillChange.send()
-        print(todos[index])
+        
         todos[index].title = todoItem.title
         todos[index].isComplete = todoItem.isComplete
-        print(todos[index])
     }
     
     private func index(for todoItem: TodoItem) -> Int? {
