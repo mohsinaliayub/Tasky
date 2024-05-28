@@ -14,9 +14,22 @@ enum ContentState {
 
 struct DateTimePickerView: View {
     @State private var date: Date = Date()
+    @State private var time = Date()
     @State private var showDatePicker = true
     @State private var statesOfSections: [ContentState] = [.expanded, .collapsed]
+    @State private var titleForSection: [String?] = [nil, nil]
 
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd. MMM"
+        return formatter
+    }()
+    private let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter
+    }()
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Due Date".uppercased())
@@ -30,18 +43,24 @@ struct DateTimePickerView: View {
     }
     
     var datePickerSection: some View {
-        SectionWithContentView(systemIconName: "calendar", title: "Pick a date", contentState: $statesOfSections[0]) {
+        SectionWithContentView(systemIconName: "calendar", title: titleForSection[0] ?? "Pick a date", contentState: $statesOfSections[0]) {
             DatePicker("", selection: $date, in: Date()..., displayedComponents: [.date])
                 .datePickerStyle(.graphical)
+                .onChange(of: date) {
+                    titleForSection[0] = dateFormatter.string(from: date)
+                }
         } stateChanged: {
             collapseSections(excluding: 0)
         }
     }
     
     var timePickerSection: some View {
-        SectionWithContentView(systemIconName: "clock", title: "Add time", contentState: $statesOfSections[1]) {
+        SectionWithContentView(systemIconName: "clock", title: titleForSection[1] ?? "Add time", contentState: $statesOfSections[1]) {
             DatePicker("", selection: $date, in: Date()..., displayedComponents: [.hourAndMinute])
                 .datePickerStyle(.wheel)
+                .onChange(of: date) {
+                    titleForSection[1] = timeFormatter.string(from: date)
+                }
         } stateChanged: {
             collapseSections(excluding: 1)
         }
