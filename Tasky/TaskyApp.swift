@@ -13,7 +13,7 @@ struct TaskyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            TodoListView(todoManager: TodoListViewModel())
+            TodoListView(model: TodoListViewModel())
                 .environment(\.colorScheme, .dark)
         }
     }

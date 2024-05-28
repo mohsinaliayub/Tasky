@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TodoListView: View {
-    @ObservedObject var todoManager: TodoListViewModel
+    @ObservedObject var model: TodoListViewModel
     @State private var displayTodoDetails = false
     @State private var selectedTodoIndex = 0
     
@@ -16,10 +16,11 @@ struct TodoListView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 8) {
-                    ForEach(0..<todoManager.todos.count, id: \.self) { todoIndex in
-                        NavigationLink(destination: TodoItemDetailView(todo: $todoManager.todos[todoIndex])) {
-                            TodoItemInfoView(task: todoManager.todos[todoIndex], manager: todoManager)
-                        }
+                    ForEach(0..<model.todos.count, id: \.self) { todoIndex in
+//                        NavigationLink(destination: TodoItemDetailView(todo: $todoManager.todos[todoIndex])) {
+//                            TodoItemInfoView(task: todoManager.todos[todoIndex], manager: todoManager)
+//                        }
+                        TodoItemInfoView(task: model.todos[todoIndex], manager: model)
                     }
                 }
             }
@@ -31,6 +32,6 @@ struct TodoListView: View {
 
 
 #Preview {
-    TodoListView(todoManager: TodoListViewModel())
+    TodoListView(model: TodoListViewModel())
         .preferredColorScheme(.dark)
 }

@@ -5,26 +5,23 @@
 //  Created by Mohsin Ali Ayub on 16.05.24.
 //
 
-import Foundation
+import SwiftUI
 
 class TodoListViewModel: ObservableObject {
-    @Published var todos: [TodoItem]
+    private(set) var manager = TodoManager()
+    
+    var todos: [TodoItem] { manager.todos }
     
     init() {
-        todos = Self.dummyTasks()
+        
     }
     
-    func changeTodoStatus(_ todo: TodoItem) {
-        guard let todoIndex = todos.firstIndex(where: { $0.id == todo.id }) else {
-            return
-        }
-        
-        todos[todoIndex].isComplete.toggle()
+    func changeTodoStatus(_ todoItem: TodoItem) {
+        objectWillChange.send()
+        manager.changeStatus(for: todoItem)
     }
     
     func string(from date: Date) -> String {
-        print(date)
-        print(Date())
         let difference = Calendar.current.dateComponents([.year, .month, .day], from: Date(), to: date)
         
         
@@ -37,16 +34,6 @@ class TodoListViewModel: ObservableObject {
             }
         }
         return ""
-    }
-    
-    private static func dummyTasks() -> [TodoItem] {
-        [
-            TodoItem(title: "Complete \"Strings and Characters\" chapter from Swift book", dueDate: tomorrowDate()),
-            TodoItem(title: "Complete Lecture 02: List-Based Collections"),
-            TodoItem(title: "Finish ExpandableSearchBar app", isComplete: true),
-            TodoItem(title: "Watch the LinkedIn video from YouTube \"Watch Later\"", isComplete: true),
-            TodoItem(title: "Finish Lesson 1 of \"DSA in Swift\" course", isComplete: true),
-        ]
     }
     
     private func dayOfWeek(_ day: Int) -> String? {
@@ -68,11 +55,5 @@ class TodoListViewModel: ObservableObject {
         default:
             return nil
         }
-    }
-    
-    
-    private static func tomorrowDate() -> Date? {
-        let calendar = Calendar.current
-        return calendar.date(byAdding: .day, value: 2, to: Date())
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TodoItemInfoView: View {
-    let task: TodoItem
+    var task: TodoItem
     let manager: TodoListViewModel
     
     var body: some View {
@@ -43,5 +43,5 @@ struct TodoItemInfoView: View {
 }
 
 #Preview {
-    TodoListView(todoManager: TodoListViewModel())
+    TodoListView(model: TodoListViewModel())
 }
