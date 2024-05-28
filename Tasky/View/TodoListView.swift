@@ -26,7 +26,7 @@ struct TodoListView: View {
             .navigationTitle("Tasky")
             .padding([.horizontal, .top])
             .navigationDestination(item: $selectedItem) { item in
-                TodoItemDetailView(model: TodoDetailViewModel(manager: model.manager, todo: item))
+                TodoItemDetailView()
             }
         }
     }

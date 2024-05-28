@@ -8,19 +8,21 @@
 import SwiftUI
 
 struct TodoItemDetailView: View {
-    @ObservedObject var model: TodoDetailViewModel
     @Environment(\.dismiss) private var dismiss
+    
+    @State private var isComplete = false
+    @State private var title = "TODO"
     
     var body: some View {
         VStack(alignment: .leading, spacing: 32) {
             VStack {
                 HStack(alignment: .top) {
-                    TaskCircleView(isComplete: model.isComplete)
+                    TaskCircleView(isComplete: isComplete)
                         .onTapGesture {
-                            model.changeStatus()
+                            // TODO: change todo status
                         }
                     VStack {
-                        TextField("Enter task", text: $model.todoTitle, axis: .vertical)
+                        TextField("Enter task", text: $title, axis: .vertical)
                             .font(.headline)
                             .lineLimit(5)
                             .padding(.bottom, 8)
@@ -42,7 +44,7 @@ struct TodoItemDetailView: View {
             
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    model.save()
+                    
                     dismiss()
                 }) {
                     Text("Done").font(.headline)
@@ -68,7 +70,7 @@ struct LabelAndContentView<Content: View>: View {
 
 #Preview {
     NavigationStack {
-        TodoItemDetailView(model: TodoDetailViewModel(manager: TodoManager(), todo: TodoItem(title: "Finish the Chapter 6: Enumerations of The Swift Programming Language (Swift 5.7) book")))
+        TodoItemDetailView()
             .preferredColorScheme(.dark)
     }
 }
