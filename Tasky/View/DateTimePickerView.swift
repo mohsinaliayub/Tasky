@@ -10,8 +10,6 @@ import SwiftUI
 struct DateTimePickerView: View {
     @State private var dueDate = Date()
     @State private var reminderTime = Date()
-    @State private var statesOfSections: [ContentState] = [.expanded, .collapsed]
-    @State private var titleForSection: [String?] = [nil, nil]
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -63,13 +61,14 @@ struct DateTimePickerView: View {
     }
     
     var dividerRectangle: some View {
-        Rectangle().foregroundStyle(.gray.opacity(0.8))
+        Rectangle().foregroundStyle(DrawingConstants.didiverRectangleColor)
     }
     var horizontalDivider: some View {
-        dividerRectangle.frame(height: 0.4)
+        dividerRectangle.frame(height: DrawingConstants.verticalDividerHeight)
     }
     var verticalDivider: some View {
-        dividerRectangle.frame(width: 0.4, height: DrawingConstants.buttonHeight)
+        dividerRectangle.frame(width: DrawingConstants.horizontalDividerWidth,
+                               height: DrawingConstants.buttonHeight)
     }
     
     var buttonsStack: some View {
@@ -88,57 +87,9 @@ struct DateTimePickerView: View {
     
     private enum DrawingConstants {
         static let buttonHeight: CGFloat = 80
-    }
-}
-
-struct SectionWithContentView<Content>: View where Content: View {
-    let systemIconName: String
-    let title: String
-    /// Keeps tracks of content's state: expanded or collapsed. Hides the content when it's set to .collapsed.
-    @Binding var contentState: ContentState
-    var content: () -> Content
-    /// Use this to change the  other sections' state to collapsed.
-    var stateChanged: () -> Void
-    
-    private let drawingConstants = DrawingConstants()
-    
-    var body: some View {
-        VStack {
-            section(with: systemIconName, and: title)
-            if contentState == .expanded {
-                content()
-                    .transition(.asymmetric(insertion: .scale, removal: .identity)) // FIXME: Fix this transition to scale from top-leading
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private func section(with systemName: String, and title: String) -> some View {
-        HStack {
-            Image(systemName: systemName)
-            Text(title).font(.caption.bold())
-            Spacer()
-        }
-        .padding(drawingConstants.sectionPadding)
-        .background(sectionBackground)
-        .onTapGesture {
-            // change the content state: collapsed -> expanded
-            withAnimation(.linear) {
-                contentState = .expanded
-            }
-            stateChanged()
-        }
-    }
-    
-    var sectionBackground: some View {
-        RoundedRectangle(cornerRadius: drawingConstants.sectionBackgroundCornerRadius)
-            .foregroundStyle(drawingConstants.sectionBackgroundColor)
-    }
-    
-    private struct DrawingConstants {
-        let sectionPadding: CGFloat = 12
-        let sectionBackgroundCornerRadius: CGFloat = 5
-        let sectionBackgroundColor = Color.gray.opacity(0.3)
+        static let didiverRectangleColor = Color.gray.opacity(0.8)
+        static let verticalDividerHeight: CGFloat = 0.4
+        static let horizontalDividerWidth: CGFloat = 0.4
     }
 }
 

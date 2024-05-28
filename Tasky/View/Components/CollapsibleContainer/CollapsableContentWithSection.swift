@@ -12,7 +12,7 @@ enum ContentState {
     case expanded
 }
 
-protocol CollapsableContentWithSection: View {
+fileprivate protocol CollapsableContentWithSection: View {
     associatedtype Section: View
     associatedtype Content: View
     
@@ -63,27 +63,4 @@ struct CollapsableContent<Section, Content>: CollapsableContentWithSection where
     var contentState: Binding<ContentState>
     var section: () -> Section
     var content: () -> Content
-}
-
-struct CollapsableContentWithSectionPreview: View {
-    @State var contentState = ContentState.expanded
-    @State var date = Date()
-    
-    var body: some View {
-        CollapsableContent(contentState: $contentState) {
-            HStack {
-                Image(systemName: "calendar")
-                Text("Pick a date").font(.caption.bold())
-                Spacer()
-            }
-        } content: {
-            DatePicker("", selection: $date, in: Date()..., displayedComponents: [.date])
-                .datePickerStyle(.graphical)
-        }
-    }
-}
-
-#Preview {
-    CollapsableContentWithSectionPreview()
-        .preferredColorScheme(.dark)
 }
