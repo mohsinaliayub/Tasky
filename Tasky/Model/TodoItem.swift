@@ -26,3 +26,7 @@ struct TodoItem: Identifiable, CustomStringConvertible {
         case high
     }
 }
+
+extension TodoItem: Hashable {
+    
+}
