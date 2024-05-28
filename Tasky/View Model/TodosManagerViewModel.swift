@@ -1,5 +1,5 @@
 //
-//  TodoListViewModel.swift
+//  TodosManagerViewModel.swift
 //  Tasky
 //
 //  Created by Mohsin Ali Ayub on 16.05.24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class TodoListViewModel: ObservableObject {
+class TodosManagerViewModel: ObservableObject {
     @Published var manager: TodoManager
     
     var todos: [TodoItem] { manager.todos }

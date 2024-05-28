@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TodoListView: View {
-    @ObservedObject var model: TodoListViewModel
+    @ObservedObject var model: TodosManagerViewModel
     @State private var selectedItem: TodoItem?
     
     var body: some View {
@@ -34,6 +34,6 @@ struct TodoListView: View {
 
 
 #Preview {
-    TodoListView(model: TodoListViewModel(manager: TodoManager()))
+    TodoListView(model: TodosManagerViewModel(manager: TodoManager()))
         .preferredColorScheme(.dark)
 }

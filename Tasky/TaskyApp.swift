@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct TaskyApp: App {
-    let model = TodoListViewModel(manager: TodoManager())
+    let model = TodosManagerViewModel(manager: TodoManager())
     
     var body: some Scene {
         WindowGroup {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TodoItemInfoView: View {
     var task: TodoItem
-    @ObservedObject var manager: TodoListViewModel
+    @ObservedObject var manager: TodosManagerViewModel
     
     var body: some View {
         HStack(alignment: .top) {
