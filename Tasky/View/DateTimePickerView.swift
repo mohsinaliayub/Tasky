@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum ContentState {
-    case collapsed
-    case expanded
-}
-
 struct DateTimePickerView: View {
     @State private var date: Date = Date()
     @State private var statesOfSections: [ContentState] = [.expanded, .collapsed]

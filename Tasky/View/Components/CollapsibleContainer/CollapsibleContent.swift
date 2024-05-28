@@ -7,7 +7,12 @@
 
 import SwiftUI
 
-protocol CollapsibleViewWithSection: View {
+enum ContentState {
+    case collapsed
+    case expanded
+}
+
+protocol CollapsableContentWithSection: View {
     associatedtype Section: View
     associatedtype Content: View
     
@@ -18,7 +23,7 @@ protocol CollapsibleViewWithSection: View {
     init(contentState: Binding<ContentState>, section: @escaping () -> Section, content: @escaping () -> Content)
 }
 
-extension CollapsibleViewWithSection {
+extension CollapsableContentWithSection {
     init(contentState: Binding<ContentState>, @ViewBuilder _ section: @escaping () -> Section, @ViewBuilder _ content: @escaping () -> Content) {
         self.init(contentState: contentState, section: section, content: content)
         self.contentState = contentState
@@ -28,26 +33,30 @@ extension CollapsibleViewWithSection {
     
     var body: some View {
         VStack {
-            section()
-                .padding(12)
-                .background {
-                    RoundedRectangle(cornerRadius: 5)
-                        .foregroundStyle(.gray.opacity(0.3))
-                }
-                .onTapGesture {
-                    withAnimation {
-                        contentState.wrappedValue = (contentState.wrappedValue == .expanded) ? .collapsed : .expanded
-                    }
-                }
+            sectionView
             if contentState.wrappedValue == .expanded {
                 content()
                     .transition(.asymmetric(insertion: .scale, removal: .identity))
             }
         }
     }
+    
+    var sectionView: some View {
+        section()
+            .padding(12)
+            .background {
+                RoundedRectangle(cornerRadius: 5)
+                    .foregroundStyle(.gray.opacity(0.3))
+            }
+            .onTapGesture {
+                withAnimation {
+                    contentState.wrappedValue = (contentState.wrappedValue == .expanded) ? .collapsed : .expanded
+                }
+            }
+    }
 }
 
-struct CollapsibleContent<Section, Content>: CollapsibleViewWithSection where Section: View, Content: View {
+struct CollapsableContent<Section, Content>: CollapsableContentWithSection where Section: View, Content: View {
     var contentState: Binding<ContentState>
     var section: () -> Section
     var content: () -> Content
@@ -58,7 +67,7 @@ struct CollapsibleContentPreview: View {
     @State var date = Date()
     
     var body: some View {
-        CollapsibleContent(contentState: $contentState) {
+        CollapsableContent(contentState: $contentState) {
             HStack {
                 Image(systemName: "calendar")
                 Text("Pick a date").font(.caption.bold())
@@ -71,30 +80,7 @@ struct CollapsibleContentPreview: View {
     }
 }
 
-struct CollapsibleContainer: View {
-    var body: some View {
-        VStack {
-            
-        }
-    }
-}
-
-struct CollapsibleViewWithSectionPreview: View {
-    @State private var state = ContentState.expanded
-    
-    var body: some View {
-        VStack {
-            
-        }
-    }
-}
-
 #Preview {
     CollapsibleContentPreview()
-        .preferredColorScheme(.dark)
-}
-
-#Preview {
-    CollapsibleViewWithSectionPreview()
         .preferredColorScheme(.dark)
 }
