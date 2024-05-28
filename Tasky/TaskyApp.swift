@@ -9,11 +9,12 @@ import SwiftUI
 
 @main
 struct TaskyApp: App {
-    let model = TodosManagerViewModel(manager: TodoManager())
+    @StateObject var manager = TodosManagerViewModel(manager: TodoManager())
     
     var body: some Scene {
         WindowGroup {
-            TodoListView(model: model)
+            TodoListView()
+                .environmentObject(manager)
                 .environment(\.colorScheme, .dark)
         }
     }
