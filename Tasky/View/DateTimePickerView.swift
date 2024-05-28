@@ -22,21 +22,29 @@ struct DateTimePickerView: View {
             Text("Due Date".uppercased())
                 .font(.caption)
                 .padding(.vertical, 8)
-            SectionWithContentView(systemIconName: "calendar", title: "Pick a date", contentState: $statesOfSections[0]) {
-                DatePicker("", selection: $date, in: Date()..., displayedComponents: [.date])
-                    .datePickerStyle(.graphical)
-            } stateChanged: {
-                collapseSections(excluding: 0)
-            }
-            SectionWithContentView(systemIconName: "clock", title: "Add time", contentState: $statesOfSections[1]) {
-                DatePicker("", selection: $date, in: Date()..., displayedComponents: [.hourAndMinute])
-                    .datePickerStyle(.wheel)
-            } stateChanged: {
-                collapseSections(excluding: 1)
-            }
+            datePickerSection
+            timePickerSection
             buttonsStack
         }
         .padding()
+    }
+    
+    var datePickerSection: some View {
+        SectionWithContentView(systemIconName: "calendar", title: "Pick a date", contentState: $statesOfSections[0]) {
+            DatePicker("", selection: $date, in: Date()..., displayedComponents: [.date])
+                .datePickerStyle(.graphical)
+        } stateChanged: {
+            collapseSections(excluding: 0)
+        }
+    }
+    
+    var timePickerSection: some View {
+        SectionWithContentView(systemIconName: "clock", title: "Add time", contentState: $statesOfSections[1]) {
+            DatePicker("", selection: $date, in: Date()..., displayedComponents: [.hourAndMinute])
+                .datePickerStyle(.wheel)
+        } stateChanged: {
+            collapseSections(excluding: 1)
+        }
     }
     
     func button(_ title: LocalizedStringKey, action: @escaping () -> Void) -> some View {
