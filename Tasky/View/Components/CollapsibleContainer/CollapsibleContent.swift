@@ -7,12 +7,43 @@
 
 import SwiftUI
 
-struct CollapsibleContent<Section, Content>: View where Section: View, Content: View {
+protocol CollapsibleViewWithSection: View {
+    associatedtype Section: View
+    associatedtype CollapsibleContent: View
+    
+    var contentState: ContentState { get set }
+    var section: () -> Section { get set }
+    var content: () -> CollapsibleContent { get set }
+    
+    func updateContentState(_ state: ContentState)
+}
+
+extension CollapsibleViewWithSection {
+    var body: some View {
+        VStack {
+            section()
+                .padding(12)
+                .background {
+                    RoundedRectangle(cornerRadius: 5)
+                        .foregroundStyle(.gray.opacity(0.3))
+                }
+                .onTapGesture {
+                    withAnimation {
+                        updateContentState(contentState == .expanded ? .collapsed : .expanded)
+                    }
+                }
+            if contentState == .expanded {
+                content()
+                    .transition(.asymmetric(insertion: .scale, removal: .identity))
+            }
+        }
+    }
+}
+
+struct CollapsibleContent<Section, Content>: CollapsibleViewWithSection where Section: View, Content: View {
     @Binding var contentState: ContentState
     var section: () -> Section
     var content: () -> Content
-    
-    private let drawingConstants = DrawingConstants()
     
     init(contentState: Binding<ContentState>, @ViewBuilder section: @escaping () -> Section, @ViewBuilder content: @escaping () -> Content) {
         self._contentState = contentState
@@ -20,39 +51,8 @@ struct CollapsibleContent<Section, Content>: View where Section: View, Content: 
         self.content = content
     }
     
-    var body: some View {
-        VStack {
-            sectionView
-            if contentState == .expanded {
-                content()
-                    .transition(.asymmetric(insertion: .scale, removal: .identity)) // FIXME: Fix this transition to scale from top-leading
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private var sectionView: some View {
-        section()
-            .padding(drawingConstants.sectionPadding)
-            .background(sectionBackground)
-            .onTapGesture {
-                print("\(contentState)", terminator: ":")
-                withAnimation(.linear) {
-                    contentState = (contentState == .expanded) ? .collapsed : .expanded
-                }
-                print("\(contentState)")
-            }
-    }
-    
-    private var sectionBackground: some View {
-        RoundedRectangle(cornerRadius: drawingConstants.sectionBackgroundCornerRadius)
-            .foregroundStyle(drawingConstants.sectionBackgroundColor)
-    }
-    
-    private struct DrawingConstants {
-        let sectionPadding: CGFloat = 12
-        let sectionBackgroundCornerRadius: CGFloat = 5
-        let sectionBackgroundColor = Color.gray.opacity(0.3)
+    func updateContentState(_ state: ContentState) {
+        contentState = state
     }
 }
 
