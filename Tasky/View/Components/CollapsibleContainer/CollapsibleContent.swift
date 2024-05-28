@@ -9,14 +9,20 @@ import SwiftUI
 
 protocol CollapsibleViewWithSection: View {
     associatedtype Section: View
-    associatedtype CollapsibleContent: View
+    associatedtype Content: View
     
     var contentState: Binding<ContentState> { get set }
     var section: () -> Section { get set }
-    var content: () -> CollapsibleContent { get set }
+    var content: () -> Content { get set }
+    
+    init(contentState: Binding<ContentState>, section: @escaping () -> Section, content: @escaping () -> Content)
 }
 
 extension CollapsibleViewWithSection {
+    init(contentState: Binding<ContentState>, @ViewBuilder _ section: @escaping () -> Section, @ViewBuilder _ content: @escaping () -> Content) {
+        self.init(contentState: contentState, section: section, content: content)
+    }
+    
     var body: some View {
         VStack {
             section()
@@ -39,15 +45,15 @@ extension CollapsibleViewWithSection {
 }
 
 struct CollapsibleContent<Section, Content>: CollapsibleViewWithSection where Section: View, Content: View {
-    var contentState: Binding<ContentState>
-    var section: () -> Section
-    var content: () -> Content
-    
-    init(contentState: Binding<ContentState>, @ViewBuilder section: @escaping () -> Section, @ViewBuilder content: @escaping () -> Content) {
+    init(contentState: Binding<ContentState>, section: @escaping () -> Section, content: @escaping () -> Content) {
         self.contentState = contentState
         self.section = section
         self.content = content
     }
+    
+    var contentState: Binding<ContentState>
+    var section: () -> Section
+    var content: () -> Content
 }
 
 struct CollapsibleContentPreview: View {
@@ -68,7 +74,22 @@ struct CollapsibleContentPreview: View {
     }
 }
 
+struct CollapsibleViewWithSectionPreview: View {
+    @State private var state = ContentState.expanded
+    
+    var body: some View {
+        VStack {
+            
+        }
+    }
+}
+
 #Preview {
     CollapsibleContentPreview()
+        .preferredColorScheme(.dark)
+}
+
+#Preview {
+    CollapsibleViewWithSectionPreview()
         .preferredColorScheme(.dark)
 }
