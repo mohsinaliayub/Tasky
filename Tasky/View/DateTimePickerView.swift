@@ -12,7 +12,10 @@ struct DateTimePickerView: View {
     @State private var showDatePicker = true
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
+            Text("Due Date".uppercased())
+                .font(.caption)
+                .padding(.vertical, 8)
             SectionWithContentView(systemIconName: "calendar", title: "Pick a date") {
                 DatePicker("", selection: $date, in: Date()..., displayedComponents: [.date])
                     .datePickerStyle(.graphical)
