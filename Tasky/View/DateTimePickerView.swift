@@ -7,22 +7,32 @@
 
 import SwiftUI
 
+enum ContentState {
+    case collapsed
+    case expanded
+}
+
 struct DateTimePickerView: View {
     @State private var date: Date = Date()
     @State private var showDatePicker = true
+    @State private var statesOfSections: [ContentState] = [.expanded, .collapsed]
 
     var body: some View {
         VStack(alignment: .leading) {
             Text("Due Date".uppercased())
                 .font(.caption)
                 .padding(.vertical, 8)
-            SectionWithContentView(systemIconName: "calendar", title: "Pick a date") {
+            SectionWithContentView(systemIconName: "calendar", title: "Pick a date", contentState: $statesOfSections[0]) {
                 DatePicker("", selection: $date, in: Date()..., displayedComponents: [.date])
                     .datePickerStyle(.graphical)
+            } stateChanged: {
+                collapseSections(excluding: 0)
             }
-            SectionWithContentView(systemIconName: "clock", title: "Add time") {
+            SectionWithContentView(systemIconName: "clock", title: "Add time", contentState: $statesOfSections[1]) {
                 DatePicker("", selection: $date, in: Date()..., displayedComponents: [.hourAndMinute])
                     .datePickerStyle(.wheel)
+            } stateChanged: {
+                collapseSections(excluding: 1)
             }
             buttonsStack
         }
@@ -32,6 +42,12 @@ struct DateTimePickerView: View {
     func button(_ title: LocalizedStringKey, action: @escaping () -> Void) -> some View {
         Button(title, action: action)
             .frame(maxWidth: .infinity, minHeight: DrawingConstants.buttonHeight)
+    }
+    
+    func collapseSections(excluding index: Int) {
+        statesOfSections.indices.filter({ $0 != index }).forEach { index in
+            statesOfSections[index] = .collapsed
+        }
     }
     
     var dividerRectangle: some View {
@@ -66,10 +82,12 @@ struct DateTimePickerView: View {
 struct SectionWithContentView<Content>: View where Content: View {
     let systemIconName: String
     let title: String
-    var content: () -> Content
-    
     /// Keeps tracks of content's state: expanded or collapsed. Hides the content when it's set to .collapsed.
-    @State private var contentState: ContentState = .collapsed
+    @Binding var contentState: ContentState
+    var content: () -> Content
+    /// Use this to change the  other sections' state to collapsed.
+    var stateChanged: () -> Void
+    
     private let drawingConstants = DrawingConstants()
     
     var body: some View {
@@ -77,7 +95,7 @@ struct SectionWithContentView<Content>: View where Content: View {
             section(with: systemIconName, and: title)
             if contentState == .expanded {
                 content()
-                    .transition(.scale) // FIXME: Fix this transition to scale from top-leading
+                    .transition(.asymmetric(insertion: .scale, removal: .identity)) // FIXME: Fix this transition to scale from top-leading
             }
         }
     }
@@ -92,21 +110,17 @@ struct SectionWithContentView<Content>: View where Content: View {
         .padding(drawingConstants.sectionPadding)
         .background(sectionBackground)
         .onTapGesture {
-            // change the content state: expanded -> collapsed, and vice versa
+            // change the content state: collapsed -> expanded
             withAnimation(.linear) {
-                contentState = (contentState == .expanded) ? .collapsed : .expanded
+                contentState = .expanded
             }
+            stateChanged()
         }
     }
     
     var sectionBackground: some View {
         RoundedRectangle(cornerRadius: drawingConstants.sectionBackgroundCornerRadius)
             .foregroundStyle(drawingConstants.sectionBackgroundColor)
-    }
-    
-    enum ContentState {
-        case collapsed
-        case expanded
     }
     
     private struct DrawingConstants {
