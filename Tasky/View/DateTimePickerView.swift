@@ -8,66 +8,58 @@
 import SwiftUI
 
 struct DateTimePickerView: View {
-    @State private var date: Date = Date()
+    @State private var dueDate = Date()
+    @State private var reminderTime = Date()
     @State private var statesOfSections: [ContentState] = [.expanded, .collapsed]
     @State private var titleForSection: [String?] = [nil, nil]
-
-    private let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd. MMM"
-        return formatter
-    }()
-    private let timeFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter
-    }()
     
     var body: some View {
         VStack(alignment: .leading) {
             Text("Due Date".uppercased())
                 .font(.caption)
                 .padding(.vertical, 8)
-            datePickerSection
-            timePickerSection
+            CollapsableContainerView(numberOfSections: 2) { index in
+                section(for: index)
+            } contentProvider: { index in
+                content(for: index)
+            }
+
             buttonsStack
         }
         .padding()
     }
     
-    var datePickerSection: some View {
-        SectionWithContentView(systemIconName: "calendar", title: titleForSection[0] ?? "Pick a date", contentState: $statesOfSections[0]) {
-            DatePicker("", selection: $date, in: Date()..., displayedComponents: [.date])
-                .datePickerStyle(.graphical)
-                .onChange(of: date) {
-                    titleForSection[0] = dateFormatter.string(from: date)
-                }
-        } stateChanged: {
-            collapseSections(excluding: 0)
+    @ViewBuilder
+    func section(for index: Int) -> some View {
+        HStack {
+            Image(systemName: index == 0 ? "calendar" : "clock")
+            Text(index == 0 ? "Pick a date" : "Add time").font(.caption.bold())
+            Spacer()
         }
     }
     
-    var timePickerSection: some View {
-        SectionWithContentView(systemIconName: "clock", title: titleForSection[1] ?? "Add time", contentState: $statesOfSections[1]) {
-            DatePicker("", selection: $date, in: Date()..., displayedComponents: [.hourAndMinute])
-                .datePickerStyle(.wheel)
-                .onChange(of: date) {
-                    titleForSection[1] = timeFormatter.string(from: date)
-                }
-        } stateChanged: {
-            collapseSections(excluding: 1)
+    @ViewBuilder
+    func content(for index: Int) -> some View {
+        if index == 0 {
+            dueDatePicker
+        } else {
+            reminderTimePicker
         }
+    }
+    
+    var dueDatePicker: some View {
+        DatePicker("", selection: $dueDate, in: Date()..., displayedComponents: .date)
+            .datePickerStyle(.graphical)
+    }
+    
+    var reminderTimePicker: some View {
+        DatePicker("", selection: $reminderTime, in: Date()..., displayedComponents: .hourAndMinute)
+            .datePickerStyle(.wheel)
     }
     
     func button(_ title: LocalizedStringKey, action: @escaping () -> Void) -> some View {
         Button(title, action: action)
             .frame(maxWidth: .infinity, minHeight: DrawingConstants.buttonHeight)
-    }
-    
-    func collapseSections(excluding index: Int) {
-        statesOfSections.indices.filter({ $0 != index }).forEach { index in
-            statesOfSections[index] = .collapsed
-        }
     }
     
     var dividerRectangle: some View {

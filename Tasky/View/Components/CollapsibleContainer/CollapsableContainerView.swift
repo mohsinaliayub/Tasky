@@ -41,7 +41,6 @@ struct CollapsableContainerView<Section, Content>: View where Section: View, Con
         .onAppear {
             contentStates[0] = .expanded
         }
-        .padding()
     }
 }
 
