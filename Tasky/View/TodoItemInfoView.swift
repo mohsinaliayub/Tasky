@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct TodoItemInfoView: View {
-    let task: Tasky.TodoItem
+    let task: TodoItem
     let manager: TodoListViewModel
     
     var body: some View {
-        HStack {
+        HStack(alignment: .top) {
             TaskCircleView(isComplete: task.isComplete)
                 .onTapGesture {
                     manager.changeTodoStatus(task)
@@ -20,7 +20,7 @@ struct TodoItemInfoView: View {
             VStack(alignment: .leading) {
                 Text(task.title)
                     .lineLimit(1)
-                    .font(.subheadline)
+                    .font(.headline)
                     .foregroundStyle(task.isComplete ? .gray : .primary)
                     .overlay {
                         if task.isComplete {
@@ -28,7 +28,11 @@ struct TodoItemInfoView: View {
                                 .foregroundStyle(.gray)
                         }
                     }
-                // TODO: Add Due date here...
+                if let dueDate = task.dueDate {
+                    Text(manager.string(from: dueDate))
+                        .font(.callout)
+                        .foregroundStyle(.gray)
+                }
             }
         }
     }

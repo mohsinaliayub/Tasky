@@ -13,7 +13,7 @@ struct TaskCircleView: View {
     var body: some View {
         Image(systemName: imageName)
             .font(.title2)
-            .imageScale(.large)
+            .imageScale(.medium)
             .foregroundStyle(isComplete ? .gray : .purple)
     }
     
