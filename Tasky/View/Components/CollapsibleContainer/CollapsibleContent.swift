@@ -11,11 +11,9 @@ protocol CollapsibleViewWithSection: View {
     associatedtype Section: View
     associatedtype CollapsibleContent: View
     
-    var contentState: ContentState { get set }
+    var contentState: Binding<ContentState> { get set }
     var section: () -> Section { get set }
     var content: () -> CollapsibleContent { get set }
-    
-    func updateContentState(_ state: ContentState)
 }
 
 extension CollapsibleViewWithSection {
@@ -29,10 +27,10 @@ extension CollapsibleViewWithSection {
                 }
                 .onTapGesture {
                     withAnimation {
-                        updateContentState(contentState == .expanded ? .collapsed : .expanded)
+                        contentState.wrappedValue = (contentState.wrappedValue == .expanded) ? .collapsed : .expanded
                     }
                 }
-            if contentState == .expanded {
+            if contentState.wrappedValue == .expanded {
                 content()
                     .transition(.asymmetric(insertion: .scale, removal: .identity))
             }
@@ -41,18 +39,14 @@ extension CollapsibleViewWithSection {
 }
 
 struct CollapsibleContent<Section, Content>: CollapsibleViewWithSection where Section: View, Content: View {
-    @Binding var contentState: ContentState
+    var contentState: Binding<ContentState>
     var section: () -> Section
     var content: () -> Content
     
     init(contentState: Binding<ContentState>, @ViewBuilder section: @escaping () -> Section, @ViewBuilder content: @escaping () -> Content) {
-        self._contentState = contentState
+        self.contentState = contentState
         self.section = section
         self.content = content
-    }
-    
-    func updateContentState(_ state: ContentState) {
-        contentState = state
     }
 }
 
