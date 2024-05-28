@@ -8,7 +8,7 @@
 import Foundation
 
 class TodoDetailViewModel: ObservableObject {
-    var manager: TodoManager
+    @Published var manager: TodoManager
     private(set) var todoItem: TodoItem
     
     @Published var todoTitle: String

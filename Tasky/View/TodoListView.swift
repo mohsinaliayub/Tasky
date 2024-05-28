@@ -9,20 +9,26 @@ import SwiftUI
 
 struct TodoListView: View {
     @ObservedObject var model: TodoListViewModel
+    @State private var selectedIndex: Int?
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     ForEach(0..<model.todos.count, id: \.self) { todoIndex in
-                        NavigationLink(destination: TodoItemDetailView(model: TodoDetailViewModel(manager: model.manager, todo: model.todos[todoIndex]))) {
-                            TodoItemInfoView(task: model.todos[todoIndex], manager: model)
-                        }
+                        TodoItemInfoView(task: model.todos[todoIndex], manager: model)
+                            .onTapGesture {
+                                selectedIndex = todoIndex
+                            }
                     }
                 }
             }
             .navigationTitle("Tasky")
             .padding([.horizontal, .top])
+            .navigationDestination(item: $selectedIndex) { index in
+                TodoItemDetailView()
+                    .environmentObject(TodoDetailViewModel(manager: model.manager, todo: model.todos[index]))
+            }
         }
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TodoItemDetailView: View {
-    @ObservedObject var model: TodoDetailViewModel
+    @EnvironmentObject var model: TodoDetailViewModel
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -43,8 +43,8 @@ struct TodoItemDetailView: View {
             
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    dismiss()
                     model.save()
+                    dismiss()
                 }) {
                     Text("Done").font(.headline)
                 }
@@ -69,7 +69,8 @@ struct LabelAndContentView<Content: View>: View {
 
 #Preview {
     NavigationStack {
-        TodoItemDetailView(model: TodoDetailViewModel(manager: TodoManager(), todo: TodoItem(title: "Finish the Chapter 6: Enumerations of The Swift Programming Language (Swift 5.7) book")))
+        TodoItemDetailView()
+            .environmentObject(TodoDetailViewModel(manager: TodoManager(), todo: TodoItem(title: "Finish the Chapter 6: Enumerations of The Swift Programming Language (Swift 5.7) book")))
             .preferredColorScheme(.dark)
     }
 }
