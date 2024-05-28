@@ -15,7 +15,7 @@ struct TodoListView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 16) {
                     ForEach(0..<model.todos.count, id: \.self) { todoIndex in
 //                        NavigationLink(destination: TodoItemDetailView(todo: $todoManager.todos[todoIndex])) {
 //                            TodoItemInfoView(task: todoManager.todos[todoIndex], manager: todoManager)
@@ -32,6 +32,6 @@ struct TodoListView: View {
 
 
 #Preview {
-    TodoListView(model: TodoListViewModel())
+    TodoListView(model: TodoListViewModel(manager: TodoManager()))
         .preferredColorScheme(.dark)
 }

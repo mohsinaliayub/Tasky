@@ -9,13 +9,13 @@ import SwiftUI
 
 struct TodoItemInfoView: View {
     var task: TodoItem
-    let manager: TodoListViewModel
+    @ObservedObject var manager: TodoListViewModel
     
     var body: some View {
         HStack(alignment: .top) {
             TaskCircleView(isComplete: task.isComplete)
                 .onTapGesture {
-                    manager.changeTodoStatus(task)
+                    manager.changeTodoStatus(for: task)
                 }
             VStack(alignment: .leading) {
                 Text(task.title)
@@ -30,8 +30,8 @@ struct TodoItemInfoView: View {
                     }
                 if let dueDate = task.dueDate {
                     Text(manager.string(from: dueDate))
-                        .font(.callout)
-                        .foregroundStyle(.gray)
+                        .font(.caption)
+                        .foregroundStyle(.accent)
                 }
             }
         }
@@ -40,8 +40,4 @@ struct TodoItemInfoView: View {
     private func imageName() -> String {
         task.isComplete ? "checkmark.circle" : "circle"
     }
-}
-
-#Preview {
-    TodoListView(model: TodoListViewModel())
 }

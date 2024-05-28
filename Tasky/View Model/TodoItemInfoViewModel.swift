@@ -1,26 +1,22 @@
 //
-//  TodoListViewModel.swift
+//  TodoItemInfoViewModel.swift
 //  Tasky
 //
-//  Created by Mohsin Ali Ayub on 16.05.24.
+//  Created by Mohsin Ali Ayub on 28.05.24.
 //
 
-import SwiftUI
+import Foundation
 
-class TodoListViewModel: ObservableObject {
-    var manager: TodoManager
-    
-    private(set) lazy var todoInfoModel = TodoItemInfoViewModel(manager: manager)
-    
-    var todos: [TodoItem] { manager.todos }
+class TodoItemInfoViewModel: ObservableObject {
+    private(set) var manager: TodoManager
     
     init(manager: TodoManager) {
         self.manager = manager
     }
     
-    func changeTodoStatus(for todoItem: TodoItem) {
+    func changeTodoStatus(for todo: TodoItem) {
         objectWillChange.send()
-        manager.changeStatus(for: todoItem)
+        manager.changeStatus(for: todo)
     }
     
     func string(from date: Date) -> String {

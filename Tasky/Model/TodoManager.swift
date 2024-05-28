@@ -8,7 +8,7 @@
 import Foundation
 
 class TodoManager: ObservableObject {
-    @Published private(set) var todos: [TodoItem]
+    @Published var todos: [TodoItem]
     
     init() {
         todos = Self.dummyTasks()
@@ -18,7 +18,9 @@ class TodoManager: ObservableObject {
         guard let todoIndex = todos.firstIndex(where: { $0.id == todoItem.id }) else {
             return
         }
+        print(todos[todoIndex])
         todos[todoIndex].isComplete.toggle()
+        print(todos[todoIndex])
     }
     
     private static func dummyTasks() -> [TodoItem] {
