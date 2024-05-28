@@ -8,8 +8,8 @@
 import Foundation
 
 class TodoDetailViewModel: ObservableObject {
-    var manager: TodoManager
-    @Published var todoItem: TodoItem
+    @Published var manager: TodoManager
+    private(set) var todoItem: TodoItem
     
     @Published var todoTitle: String
     @Published var isComplete: Bool
@@ -26,7 +26,6 @@ class TodoDetailViewModel: ObservableObject {
         todoItem.title = todoTitle
         todoItem.isComplete = isComplete
         
-        objectWillChange.send()
         manager.save(todoItem)
     }
     

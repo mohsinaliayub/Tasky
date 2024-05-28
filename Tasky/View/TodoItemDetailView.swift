@@ -43,8 +43,8 @@ struct TodoItemDetailView: View {
             
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    model.save()
                     dismiss()
+                    model.save()
                 }) {
                     Text("Done").font(.headline)
                 }
