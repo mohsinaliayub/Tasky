@@ -21,6 +21,9 @@ protocol CollapsibleViewWithSection: View {
 extension CollapsibleViewWithSection {
     init(contentState: Binding<ContentState>, @ViewBuilder _ section: @escaping () -> Section, @ViewBuilder _ content: @escaping () -> Content) {
         self.init(contentState: contentState, section: section, content: content)
+        self.contentState = contentState
+        self.section = section
+        self.content = content
     }
     
     var body: some View {
@@ -45,12 +48,6 @@ extension CollapsibleViewWithSection {
 }
 
 struct CollapsibleContent<Section, Content>: CollapsibleViewWithSection where Section: View, Content: View {
-    init(contentState: Binding<ContentState>, section: @escaping () -> Section, content: @escaping () -> Content) {
-        self.contentState = contentState
-        self.section = section
-        self.content = content
-    }
-    
     var contentState: Binding<ContentState>
     var section: () -> Section
     var content: () -> Content
@@ -70,6 +67,14 @@ struct CollapsibleContentPreview: View {
         } content: {
             DatePicker("", selection: $date, in: Date()..., displayedComponents: [.date])
                 .datePickerStyle(.graphical)
+        }
+    }
+}
+
+struct CollapsibleContainer: View {
+    var body: some View {
+        VStack {
+            
         }
     }
 }
