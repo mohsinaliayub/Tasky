@@ -1,3 +1,5 @@
+# Tasky
+
 An iOS app that lets you create scheduled tasks with a priority.
 
 ## Description
